@@ -57,6 +57,7 @@ app.use(authMiddleware.unless({
     path: [
         '/users/login',
         '/users/register',
+        '/users/validate',
         /\/upload-images*/, // regex + wildcard for all things under '/upload-images/'
         { url: '/', methods: ['GET', 'POST', 'PATCH', 'DELETE']  }
     ]

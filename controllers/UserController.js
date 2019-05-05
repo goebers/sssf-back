@@ -125,7 +125,7 @@ exports.isTokenValid = (token, req, res, next) => {
             console.log('isTokenValid error: ' + err);
             return res.json({ isTokenValid: false });
         }
-        
+
         return res.json({ isTokenValid: true });
     });
 };
