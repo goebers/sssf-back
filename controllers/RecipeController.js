@@ -10,3 +10,14 @@ exports.getAllRecipes = () => {
         return err;
     });
 };
+
+exports.getRecipeById = (id) => {
+    const query = {_id: id};
+
+    return Recipe.findOne(query).then( (recipe) => {
+        return recipe;
+    }).catch( (err) => {
+        console.log('Get single recipe by ID error: ' + err);
+        return err;
+    });
+};
