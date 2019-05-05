@@ -29,4 +29,9 @@ router.post('/register', (req, res, next) => {
     userController.createUser(req.body, req, res, next);
 });
 
+router.get('/validate', (req, res, next) => {
+    const token = req.headers['access-token'];
+    userController.isTokenValid(token, req, res, next);
+});
+
 module.exports = router;

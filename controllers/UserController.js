@@ -116,5 +116,16 @@ exports.createUser = (data, req, res, next) => {
     } else {
         return res.json({ message: 'passwords are not the same' });
     }
-    
+};
+
+// verify incoming token and return if it is still valid or not
+exports.isTokenValid = (token, req, res, next) => {
+    jwt.verify(token, secret, (err, decoded) => {
+        if(err) {
+            console.log('isTokenValid error: ' + err);
+            return res.json({ isTokenValid: false });
+        }
+        
+        return res.json({ isTokenValid: true });
+    });
 };

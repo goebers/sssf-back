@@ -8,13 +8,15 @@ const recipeRouter = require('./routers/RecipeRouter');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const fs = require('fs');
-const path = require('path');
 
 // this is so .env-files work
 require('dotenv').config();
 
 // express methods
 const app = express();
+
+// enable pre-flight requests
+app.options('*', cors());
 
 // serve images as static shits and dont require auth check
 app.use('/upload-images', express.static('upload-images'));
