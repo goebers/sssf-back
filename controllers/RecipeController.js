@@ -27,14 +27,14 @@ exports.getRecipeById = (id, req, res, next) => {
 // create new recipe
 exports.createRecipe = (data, req, res, next) => {
     const image = req.file;
-    console.log(image);
+    console.log(data);
 
     // construct new recipe that gets sent to DB
     const newRecipe = new Recipe({
         title: data.title,
         description: data.description,
         image: image.path,
-        owner_user_id: data.userId
+        ownerId: data.userId
     });
 
     return Recipe.create(newRecipe).then( (recipe) => {

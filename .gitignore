@@ -62,3 +62,9 @@ typings/
 
 # upload-images folder that has all the recipe pictures
 /upload-images
+
+# apidoc folder
+/apidoc
+
+# DS_Store
+.DS_Store

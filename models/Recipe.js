@@ -9,7 +9,7 @@ const RecipeSchema = new Schema({
     description: String,
     favorites: Number,
     image: String,
-    owner_user_id: String
+    ownerId: String
 }, { timestamps: true });
 
 module.exports = mongoose.model('Recipe', RecipeSchema);

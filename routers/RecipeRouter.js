@@ -17,23 +17,89 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// get all recipes
+/**
+ * @api {get} /recipes/all Get all recipes
+ * @apiName getAllRecipes
+ * @apiGroup Recipes
+ * 
+ * @apiHeader {String} access-token JSON web token
+ * 
+ * @apiSuccess {Array} recipes Array of all recipes
+ * 
+ * @apiSuccessExample Success-Response:
+ *  HTTP/1.1 200 OK
+ *  [
+ *   {
+ *       "_id": "id",
+ *       "title": "title",
+ *       "description": "description",
+ *       "image": "image-path"
+ *   }
+ *  ]
+ */
 router.get('/all', (req, res, next) => {
     recipeController.getAllRecipes(req, res, next);
 });
 
-// get single recipe by id
+/**
+ * @api {get} /recipes/id/:id Get a single recipe
+ * @apiName getrecipeById
+ * @apiGroup Recipes
+ * 
+ * @apiHeader {String} access-token JSON web token
+ * 
+ * @apiParam {String} id Recipes unique id.
+ * 
+ * @apiSuccess {String} _id Recipes unique id.
+ * @apiSuccess {String} title Recipes title.
+ * @apiSuccess {String} description Recipes description.
+ * @apiSuccess {String} image Recipes image as a path.
+ * @apiSuccess {String} title Recipes title.
+ * 
+ * @apiSuccessExample Success-Response:
+ *  HTTP/1.1 200 OK
+ *   {
+ *       "_id": "id",
+ *       "title": "title",
+ *       "description": "description",
+ *       "image": "image-path"
+ *   }
+ */
 router.get('/id/:id', (req, res, next) => {
     recipeController.getRecipeById(req.params.id, req, res, next);
 });
 
-// post a new recipe
+/**
+ * @api {post} /recipes/new Create new recipe
+ * @apiName createRecipe
+ * @apiGroup Recipes
+ * 
+ * @apiHeader {String} access-token JSON web token
+ * @apiHeader {String} Content-Type multipart/form-data
+ * 
+ * @apiParam {String} title New recipes title.
+ * @apiParam {String} description New recipes description.
+ * @apiParam {File} image New recipes image.
+ * @apiParam {String} userId New recipes owner id.
+ * 
+ * @apiSuccess {String} _id Recipes unique id.
+ * @apiSuccess {String} title Recipes title.
+ * @apiSuccess {String} description Recipes description.
+ * @apiSuccess {String} image Recipes image as a path.
+ * @apiSuccess {String} title Recipes title.
+ * @apiSuccess {String} ownerId Recipes owner's user id.
+ * 
+ * @apiSuccessExample Success-Response:
+ *  HTTP/1.1 200 OK
+ *   {
+ *       "_id": "id",
+ *       "title": "title",
+ *       "description": "description",
+ *       "image": "image-path",
+ *       "ownerId": "ownerId"
+ *   }
+ */
 router.post('/new', upload.single('image'), (req, res, next) => {
-    recipeController.createRecipe(req.body, req, res, next)
-});
-
-// post a new recipe
-router.patch('/id/:id', (req, res, next) => {
     recipeController.createRecipe(req.body, req, res, next)
 });
 
