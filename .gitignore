@@ -59,3 +59,6 @@ typings/
 
 # next.js build output
 .next
+
+# upload-images folder that has all the recipe pictures
+/upload-images

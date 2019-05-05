@@ -8,6 +8,9 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const secret = require('../config/jwtConfig').secret;
 
+// dot env files conf
+require('dotenv').config();
+
 // return all users 
 exports.getAllUsers = (req, res, next) => {
     User.find().then( (user) => {
@@ -64,10 +67,10 @@ exports.loginUser = (req, res, next) => {
         };
 
         const token = jwt.sign(payload, secret, {
-            expiresIn: 86400 // expires in 24 hours
+            expiresIn: Number.parseInt(process.env.JWT_EXPIRATION) // expires in 24 hours (parseint as a hack)
         });
 
-        return res.json({ message: 'authentication was successfull', token: token, userId: user['_id'], tokenMaxAge: 86400 }); // 86400 = 24 hours
+        return res.json({ message: 'authentication was successfull', token: token, userId: user['_id'], tokenMaxAge: process.env.JWT_EXPIRATION }); // 86400 = 24 hours
     })(req, res, next);
 };
 
@@ -93,14 +96,14 @@ exports.createUser = (data, req, res, next) => {
                         };
                         
                         const token = jwt.sign(payload, secret, {
-                            expiresIn: 86400 // expires in 24 hours
+                            expiresIn: Number.parseInt(process.env.JWT_EXPIRATION) // expires in 24 hours (parseint as a hack)
                         });
 
                         // set hash and save newUser
                         newUser.hash = hash;
                         newUser.save(newUser);
                         
-                        return res.json({ message: 'creation of new user was successfull', token: token, userId: newUser['_id'], tokenMaxAge: 86400 }); // 86400 = 24 hours
+                        return res.json({ message: 'creation of new user was successfull', token: token, userId: newUser['_id'], tokenMaxAge: process.env.JWT_EXPIRATION }); // 86400 = 24 hours
                     } else {
                         console.log(err);
                     }

@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const RecipeSchema = new Schema({
-    title: {type: String, required: [true, "Title cannot be empty."]},
+    title: String,
     description: String,
     favorites: Number,
     image: String,

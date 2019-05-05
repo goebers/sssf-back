@@ -7,6 +7,8 @@ const userRouter = require('./routers/UserRouter');
 const recipeRouter = require('./routers/RecipeRouter');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+const fs = require('fs');
+const path = require('path');
 
 // this is so .env-files work
 require('dotenv').config();
@@ -14,7 +16,10 @@ require('dotenv').config();
 // express methods
 const app = express();
 
-// json webtoken authentication middleware everywhere except login and register routes
+// serve images as static shits and dont require auth check
+app.use('/upload-images', express.static('upload-images'));
+
+// json webtoken authentication middleware everywhere except routes listed below
 const unless = require('express-unless');
 const jwt = require('jsonwebtoken');
 const secret = require('./config/jwtConfig').secret;
@@ -50,14 +55,15 @@ app.use(authMiddleware.unless({
     path: [
         '/users/login',
         '/users/register',
-        { url: '/', methods: ['GET', 'POST', 'PUT', 'DELETE']  }
+        /\/upload-images*/, // regex + wildcard for all things under '/upload-images/'
+        { url: '/', methods: ['GET', 'POST', 'PATCH', 'DELETE']  }
     ]
 }));
 
 // Passport config
 require('./config/passport')(passport);
 
-// server config
+// server middlewares
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -65,6 +71,7 @@ app.use(bodyParser.json());
 // passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
 // define the routes for user + recipe stuffs
 app.use('/users', userRouter);
 app.use('/recipes', recipeRouter);
@@ -75,5 +82,14 @@ mongoose.connect(`mongodb://${process.env.DB_USER}:${process.env.DB_PWD}@${proce
 
     app.listen(process.env.DB_PORT, () => {
         console.log(`Server running on ${process.env.DB_HOST}:${process.env.DB_PORT}`);
+
+        // make upload-images directory if it doesnt exist
+        if (!fs.existsSync('upload-images/')) {
+            fs.mkdir('./upload-images/', (err) => {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        }
     });
 });

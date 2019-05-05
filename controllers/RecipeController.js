@@ -25,16 +25,19 @@ exports.getRecipeById = (id, req, res, next) => {
 };
 
 // create new recipe
-exports.createRecipe = (res, req, next) => {
+exports.createRecipe = (data, req, res, next) => {
+    const image = req.file;
+    console.log(image);
+
+    // construct new recipe that gets sent to DB
     const newRecipe = new Recipe({
-        title: req.body.title,
-        description: req.body.description,
-        image: '',
-        owner_user_id: req.body.userId
+        title: data.title,
+        description: data.description,
+        image: image.path,
+        owner_user_id: data.userId
     });
 
-
-    return Recipe.create(query).then( (recipe) => {
+    return Recipe.create(newRecipe).then( (recipe) => {
         res.json(recipe);
     }).catch( (err) => {
         console.log('Get single recipe by ID error: ' + err);
